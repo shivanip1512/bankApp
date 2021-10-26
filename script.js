@@ -77,50 +77,60 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 const displayMovements = function (movements) {
   containerMovements.innerHTML = '';
-  movements.forEach((element,i) => {
+  movements.forEach((element, i) => {
     const type = element > 0 ? 'deposit' : 'withdrawal';
     const html = `
     <div class="movements__row">
           <div class="movements__type movements__type--${type}">
-            ${i+1} ${type}
+            ${i + 1} ${type}
           </div>
           <div class="movements__value">₹${Math.abs(element)}</div>
         </div>
     `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
-}
+};
 
 displayMovements(account1.movements);
 
 const createUsernames = function (accs) {
   accs.forEach(acc => {
-    acc.userName =
-      acc.owner.split(' ').map(name => name[0].toLowerCase()).join('');
+    acc.userName = acc.owner
+      .split(' ')
+      .map(name => name[0].toLowerCase())
+      .join('');
   });
 };
 
 createUsernames(accounts);
 
 const displayTotalBalance = function (moves) {
-  const bal =  moves.reduce((acc, mov) => acc + mov,0);
-labelBalance.textContent = `₹${bal}`;
-}
-
+  const bal = moves.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `₹${bal}`;
+};
 
 displayTotalBalance(account1.movements);
 
 const calcDisplaySummary = function (movements) {
-  const deposites = movements.filter(mov => mov > 0).reduce((acc, curr) => acc + curr);
+  const deposites = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, curr) => acc + curr);
   labelSumIn.textContent = `₹${deposites}`;
-  
-  const withdrawal = movements.filter(mov => mov < 0)
-    .reduce((acc, curr,i,arr) => {
+
+  const withdrawal = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, curr, i, arr) => {
       // console.log(arr,acc,curr);
       return acc + curr;
     });
   labelSumOut.textContent = `₹${Math.abs(withdrawal)}`;
 
-}
+  //if interest is 20% on each deposite
+  const interest = movements
+    .filter(deposite => deposite > 0)
+    .map(deposite => (deposite * 1.2) / 100)
+    .reduce((acc, interest) => acc + interest);
+  labelSumInterest.textContent = `₹${interest}`;
+};
 
 calcDisplaySummary(account1.movements);
