@@ -94,7 +94,7 @@ nav {
   gap: 2rem;
 
   /* NOTE This creates the fade in/out anumation */
-  /* opacity: 0; */
+  opacity: 0;
   transition: all 1s;
 }
 
@@ -303,17 +303,19 @@ h2 {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 7px grey;
+  /* box-shadow: inset 0 0 7px grey; */
   border-radius: 10px;
+  /* background: rgb(233, 232, 232); */
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #c0c0c0;
+  box-shadow: inset 0 0 7px rgb(139, 139, 139);
+  /* background: #c0c0c0; */
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #a9a9a9;
+  background: #d8d8d8;
 }
