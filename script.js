@@ -183,3 +183,39 @@ btnLogin.addEventListener('click', function (e) {
     renderUI(activeAccount);
   }
 });
+
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const transferTo = inputTransferTo.value;
+  const amtTransfer = Number(inputTransferAmount.value);
+  
+  const receiverAcc = accounts.find(acc => acc.userName === transferTo);
+  if (
+    receiverAcc &&
+    amtTransfer > 0 &&
+    activeAccount.balance >= amtTransfer &&
+    receiverAcc.userName !== activeAccount.userName
+  ) {
+    activeAccount.movements.push(-amtTransfer);
+    receiverAcc.movements.push(amtTransfer);
+    renderUI(activeAccount);
+  }
+  inputTransferAmount.value = inputTransferTo.value = '';
+  inputTransferAmount.blur();
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (
+    activeAccount.userName === inputCloseUsername.value &&
+    activeAccount.pin === Number(inputClosePin.value)
+  ){
+    const index = accounts.findIndex(acc => acc.userName === activeAccount.userName);
+    console.log(index);
+    accounts.splice(index, 1);
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin.value = '';
+  labelWelcome.textContent = 'Log in to get started';
+});
