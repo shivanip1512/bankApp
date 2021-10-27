@@ -6,28 +6,28 @@
 
 // Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: 'Shivani Pacharne',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: 'Sweety Indrajeet Samanta',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 };
 
 const account3 = {
-  owner: 'Steven Thomas Williams',
+  owner: 'Kirti Choudhary',
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
 };
 
 const account4 = {
-  owner: 'Sarah Smith',
+  owner: 'Sneha Sharma',
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
@@ -110,7 +110,7 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
+// displayMovements(account1.movements);
 
 const createUsernames = function (accs) {
   accs.forEach(acc => {
@@ -123,17 +123,20 @@ const createUsernames = function (accs) {
 
 createUsernames(accounts);
 
-const displayTotalBalance = function (moves) {
-  const bal = moves.reduce((acc, mov) => acc + mov, 0);
+const displayTotalBalance = function (account) {
+  const bal = account.movements.reduce((acc, mov) => acc + mov, 0);
+  account.balance = bal;
   labelBalance.textContent = `₹${bal}`;
 };
 
-displayTotalBalance(account1.movements);
+// displayTotalBalance(account1.movements);
 
-const calcDisplaySummary = function (movements) {
+const displaySummary = function (account) {
+  const movements = account.movements;
+  const interestOnDeposite = account.interestRate;
   const deposites = movements
     .filter(mov => mov > 0)
-    .reduce((acc, curr) => acc + curr);
+    .reduce((acc, curr) => acc + curr,0);
   labelSumIn.textContent = `₹${deposites}`;
 
   const withdrawal = movements
@@ -141,15 +144,42 @@ const calcDisplaySummary = function (movements) {
     .reduce((acc, curr, i, arr) => {
       // console.log(arr,acc,curr);
       return acc + curr;
-    });
+    },0);
   labelSumOut.textContent = `₹${Math.abs(withdrawal)}`;
 
-  //if interest is 20% on each deposite
   const interest = movements
     .filter(deposite => deposite > 0)
-    .map(deposite => (deposite * 1.2) / 100)
-    .reduce((acc, interest) => acc + interest);
+    .map(deposite => (deposite * interestOnDeposite) / 100)
+    .reduce((acc, interest) => acc + interest,0);
   labelSumInterest.textContent = `₹${interest}`;
 };
 
-calcDisplaySummary(account1.movements);
+// displaySummary(account1.movements);
+
+const renderUI = function (acc) {
+   //display movements
+    displayMovements(acc.movements);
+
+    //display balance
+    displayTotalBalance(acc);
+
+    //display summary
+    displaySummary(acc);
+}
+
+let activeAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault(); // prevent default behaviour of login form
+  activeAccount = accounts.find(acc => acc.userName === inputLoginUsername.value);
+  
+  if (activeAccount?.pin === Number(inputLoginPin.value)) {
+    //display welcome message
+    labelWelcome.textContent = `Welcome back, ${activeAccount.owner.split(' ')[0]}`;
+    containerApp.style.opacity = 'unset';
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+
+    renderUI(activeAccount);
+  }
+});
