@@ -1,9 +1,5 @@
 'use strict';
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// BANKIST APP
-
 // Data
 const account1 = {
   owner: 'Shivani Pacharne',
@@ -218,6 +214,7 @@ btnLoan.addEventListener('click', function (e) {
   inputLoanAmount.value = '';
 })
 
+
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
   if (
@@ -232,3 +229,41 @@ btnClose.addEventListener('click', function (e) {
   inputCloseUsername.value = inputClosePin.value = '';
   labelWelcome.textContent = 'Log in to get started';
 });
+
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the main container and the body
+var body = document.getElementsByTagName('body');
+var container = document.getElementById('myContainer');
+
+// Get the open button
+var tnC = document.getElementById("tnC");
+
+// Get the close button
+var close = document.getElementById("closeModal");
+
+// Open the modal
+tnC.onclick = function() {
+    modal.className = "Modal is-visuallyHidden";
+    setTimeout(function() {
+      body.className = "MainContainer is-blurred";
+      modal.className = "Modal";
+      body.style.background = 'rgba(100, 100, 100, 0.5)';
+    }, 100);
+}
+
+// Close the modal
+close.onclick = function() {
+    modal.className = "Modal is-hidden is-visuallyHidden";
+    body.className = "";
+    body.className = "MainContainer";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.className = "Modal is-hidden";
+        body.className = "";
+    }
+}
