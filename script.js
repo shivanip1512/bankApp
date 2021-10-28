@@ -205,6 +205,19 @@ btnTransfer.addEventListener('click', function (e) {
   inputTransferAmount.blur();
 });
 
+// grant loan condition--> if their is atleast1 deposite with 10%of loan amt
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const loanAmt = Number(inputLoanAmount.value);
+  const canGrantLoan = activeAccount.movements
+    .some(move => move >= loanAmt * 0.1);
+  if (loanAmt>0 && canGrantLoan) {
+    activeAccount.movements.push(loanAmt);
+    renderUI(activeAccount);
+  }
+  inputLoanAmount.value = '';
+})
+
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
   if (
