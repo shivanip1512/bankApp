@@ -67,32 +67,32 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-/////////////////////////////////////////////////
-
 function dateformatter() {
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1;
 
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1;
-
-    var yyyy = today.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-    if (mm < 10) {
-        mm = '0' + mm;
-    }
-    var today = dd + '/' + mm + '/' + yyyy;
+  var yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  var today = dd + '/' + mm + '/' + yyyy;
   labelDate.textContent = today;
 }
 
 dateformatter();
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach((element, i) => {
+
+  const movs = sort
+    ? movements.slice().sort((curr, next) => curr - next)
+    : movements;
+
+  movs.forEach((element, i) => {
     const type = element > 0 ? 'deposit' : 'withdrawal';
     const html = `
     <div class="movements__row">
@@ -132,7 +132,7 @@ const displaySummary = function (account) {
   const interestOnDeposite = account.interestRate;
   const deposites = movements
     .filter(mov => mov > 0)
-    .reduce((acc, curr) => acc + curr,0);
+    .reduce((acc, curr) => acc + curr, 0);
   labelSumIn.textContent = `₹${deposites}`;
 
   const withdrawal = movements
@@ -140,38 +140,42 @@ const displaySummary = function (account) {
     .reduce((acc, curr, i, arr) => {
       // console.log(arr,acc,curr);
       return acc + curr;
-    },0);
+    }, 0);
   labelSumOut.textContent = `₹${Math.abs(withdrawal)}`;
 
   const interest = movements
     .filter(deposite => deposite > 0)
     .map(deposite => (deposite * interestOnDeposite) / 100)
-    .reduce((acc, interest) => acc + interest,0);
+    .reduce((acc, interest) => acc + interest, 0);
   labelSumInterest.textContent = `₹${interest}`;
 };
 
 // displaySummary(account1.movements);
 
 const renderUI = function (acc) {
-   //display movements
-    displayMovements(acc.movements);
+  //display movements
+  displayMovements(acc.movements);
 
-    //display balance
-    displayTotalBalance(acc);
+  //display balance
+  displayTotalBalance(acc);
 
-    //display summary
-    displaySummary(acc);
-}
+  //display summary
+  displaySummary(acc);
+};
 
 let activeAccount;
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); // prevent default behaviour of login form
-  activeAccount = accounts.find(acc => acc.userName === inputLoginUsername.value);
-  
+  activeAccount = accounts.find(
+    acc => acc.userName === inputLoginUsername.value
+  );
+
   if (activeAccount?.pin === Number(inputLoginPin.value)) {
     //display welcome message
-    labelWelcome.textContent = `Welcome back, ${activeAccount.owner.split(' ')[0]}`;
+    labelWelcome.textContent = `Welcome back, ${
+      activeAccount.owner.split(' ')[0]
+    }`;
     containerApp.style.opacity = 'unset';
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
@@ -180,12 +184,18 @@ btnLogin.addEventListener('click', function (e) {
   }
 });
 
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  console.log('btn sort');
+  displayMovements(activeAccount.movements, (sorted = !sorted));
+});
 
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   const transferTo = inputTransferTo.value;
   const amtTransfer = Number(inputTransferAmount.value);
-  
+
   const receiverAcc = accounts.find(acc => acc.userName === transferTo);
   if (
     receiverAcc &&
@@ -205,23 +215,25 @@ btnTransfer.addEventListener('click', function (e) {
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
   const loanAmt = Number(inputLoanAmount.value);
-  const canGrantLoan = activeAccount.movements
-    .some(move => move >= loanAmt * 0.1);
-  if (loanAmt>0 && canGrantLoan) {
+  const canGrantLoan = activeAccount.movements.some(
+    move => move >= loanAmt * 0.1
+  );
+  if (loanAmt > 0 && canGrantLoan) {
     activeAccount.movements.push(loanAmt);
     renderUI(activeAccount);
   }
   inputLoanAmount.value = '';
-})
-
+});
 
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
   if (
     activeAccount.userName === inputCloseUsername.value &&
     activeAccount.pin === Number(inputClosePin.value)
-  ){
-    const index = accounts.findIndex(acc => acc.userName === activeAccount.userName);
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.userName === activeAccount.userName
+    );
     console.log(index);
     accounts.splice(index, 1);
     containerApp.style.opacity = 0;
@@ -238,32 +250,32 @@ var body = document.getElementsByTagName('body');
 var container = document.getElementById('myContainer');
 
 // Get the open button
-var tnC = document.getElementById("tnC");
+var tnC = document.getElementById('tnC');
 
 // Get the close button
-var close = document.getElementById("closeModal");
+var close = document.getElementById('closeModal');
 
 // Open the modal
-tnC.onclick = function() {
-    modal.className = "Modal is-visuallyHidden";
-    setTimeout(function() {
-      body.className = "MainContainer is-blurred";
-      modal.className = "Modal";
-      body.style.background = 'rgba(100, 100, 100, 0.5)';
-    }, 100);
-}
+tnC.onclick = function () {
+  modal.className = 'Modal is-visuallyHidden';
+  setTimeout(function () {
+    body.className = 'MainContainer is-blurred';
+    modal.className = 'Modal';
+    body.style.background = 'rgba(100, 100, 100, 0.5)';
+  }, 100);
+};
 
 // Close the modal
-close.onclick = function() {
-    modal.className = "Modal is-hidden is-visuallyHidden";
-    body.className = "";
-    body.className = "MainContainer";
-}
+close.onclick = function () {
+  modal.className = 'Modal is-hidden is-visuallyHidden';
+  body.className = '';
+  body.className = 'MainContainer';
+};
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.className = "Modal is-hidden";
-        body.className = "";
-    }
-}
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.className = 'Modal is-hidden';
+    body.className = '';
+  }
+};
