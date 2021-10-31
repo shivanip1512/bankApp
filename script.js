@@ -12,9 +12,9 @@ const account1 = {
     '2020-01-28T09:15:04.904Z',
     '2020-04-01T10:17:24.185Z',
     '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 4),
+    new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
+    new Date().toISOString(),
   ],
   currency: 'EUR',
   locale: 'pt-PT',
@@ -31,9 +31,9 @@ const account2 = {
     '2019-12-25T06:04:23.907Z',
     '2020-01-25T14:18:46.235Z',
     '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 6),
+    new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
+    new Date().toISOString(),
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -50,9 +50,9 @@ const account3 = {
     '2019-02-25T06:44:23.907Z',
     '2020-09-25T14:08:46.235Z',
     '2020-08-05T16:33:06.386Z',
-    '2020-07-10T14:13:26.374Z',
-    '2020-03-25T18:59:59.371Z',
-    '2020-06-26T12:21:20.894Z',
+    new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 5),
+    new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
+    new Date().toISOString(),
   ],
   currency: 'Rupee',
   locale: 'en-IN',
@@ -67,8 +67,8 @@ const account4 = {
     '2019-11-01T13:15:33.035Z',
     '2019-11-30T09:48:16.867Z',
     '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
+    new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3),
+    new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
   ],
   currency: 'Yen',
   locale: 'ja-JP',
@@ -106,7 +106,7 @@ const currencies = new Map([
   ['USD', 'United States dollar'],
   ['EUR', 'Euro'],
   ['Rupee', 'Indian Rupees'],
-  ['Yen','Japanese Yen']
+  ['Yen', 'Japanese Yen'],
 ]);
 
 function dateformatter(today) {
@@ -121,6 +121,23 @@ function dateformatter(today) {
 
 labelDate.textContent = dateformatter(new Date());
 
+function formatMovDate(date) {
+  let daysStr;
+
+  const numOfDays = Math.round((new Date() - date) / (1000 * 60 * 60 * 24));
+
+  if (numOfDays == 0) {
+    daysStr = 'Today';
+  } else if (numOfDays == 1) {
+    daysStr = 'Yesterday';
+  } else if (numOfDays <= 7) {
+    daysStr = numOfDays + ' days ago';
+  } else {
+    daysStr = dateformatter(date).slice(0, 10);
+  }
+  return daysStr;
+}
+
 const displayMovements = function (accs, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -130,7 +147,8 @@ const displayMovements = function (accs, sort = false) {
 
   movs.forEach((element, i) => {
     const type = element > 0 ? 'deposit' : 'withdrawal';
-    const date = dateformatter(new Date(accs.movementsDates[i])).slice(0, 10);
+    // const date = dateformatter(new Date(accs.movementsDates[i])).slice(0, 10);
+    const date = formatMovDate(new Date(accs.movementsDates[i]));
     const html = `
     <div class="movements__row">
           <div class="movements__type movements__type--${type}">
@@ -224,7 +242,7 @@ btnSort.addEventListener('click', function (e) {
   displayMovements(activeAccount, (sorted = !sorted));
 });
 
-//transfer amount 
+//transfer amount
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   const transferTo = inputTransferTo.value;
@@ -270,7 +288,7 @@ btnLoan.addEventListener('click', function (e) {
   inputLoanAmount.value = '';
 });
 
-//close account 
+//close account
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
   if (
@@ -325,3 +343,8 @@ window.onclick = function (event) {
     body.className = '';
   }
 };
+
+//fake account
+activeAccount = account1;
+renderUI(activeAccount);
+containerApp.style.opacity = 100;
