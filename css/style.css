@@ -330,10 +330,15 @@ h2 {
   height: 100%;
   padding-top: 100px;
   background-color: black;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
   -webkit-transition: 0.5s;
   overflow: auto;
   transition: all 0.3s linear;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 .Modal-content {
