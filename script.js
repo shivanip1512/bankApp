@@ -109,7 +109,7 @@ const currencies = new Map([
   ['Yen', 'Japanese Yen'],
 ]);
 
-let activeAccount;
+let activeAccount, timer;
 //fake account
 // activeAccount = account1;
 
@@ -129,7 +129,7 @@ function dateformatter(today) {
     month: '2-digit',
     year: 'numeric',
   };
-  return new Intl.DateTimeFormat(activeAccount.locale, options).format(today);
+  return new Intl.DateTimeFormat(activeAccount?.locale, options).format(today);
 }
 
 labelDate.textContent = dateformatter(new Date());
@@ -251,6 +251,8 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    if (timer) clearInterval(timer);
+    logoutTimer();
     renderUI(activeAccount);
   }
 });
@@ -260,6 +262,8 @@ let sorted = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
   displayMovements(activeAccount, (sorted = !sorted));
+  clearInterval(timer);
+  logoutTimer();
 });
 
 //transfer amount
@@ -287,6 +291,8 @@ btnTransfer.addEventListener('click', function (e) {
   }
   inputTransferAmount.value = inputTransferTo.value = '';
   inputTransferAmount.blur();
+  clearInterval(timer);
+  logoutTimer();
 });
 
 // grant loan condition--> if their is atleast1 deposite with 10%of loan amt
@@ -297,15 +303,27 @@ btnLoan.addEventListener('click', function (e) {
     move => move >= loanAmt * 0.1
   );
   if (loanAmt > 0 && canGrantLoan) {
-    //take loan from bank
-    activeAccount.movements.push(loanAmt);
+    const modal = document.getElementById('loader');
+    setTimeout(() => {
+      //take loan from bank
+      activeAccount.movements.push(loanAmt);
 
-    //add loan date
-    activeAccount.movementsDates.push(new Date().toISOString());
+      //add loan date
+      activeAccount.movementsDates.push(new Date().toISOString());
 
-    renderUI(activeAccount);
+      renderUI(activeAccount);
+
+      modal.className = 'Modal is-hidden is-visuallyHidden';
+      body.className = '';
+      body.className = 'MainContainer';
+    }, 3000);
+
+    body.className = 'MainContainer is-blurred';
+    modal.className = 'Modal';
+    inputLoanAmount.value = '';
   }
-  inputLoanAmount.value = '';
+  clearInterval(timer);
+  logoutTimer();
 });
 
 //close account
@@ -318,12 +336,14 @@ btnClose.addEventListener('click', function (e) {
     const index = accounts.findIndex(
       acc => acc.userName === activeAccount.userName
     );
-    console.log(index);
+    // console.log(index);
     accounts.splice(index, 1);
     containerApp.style.opacity = 0;
+    labelWelcome.textContent = 'Log in to get started';
   }
   inputCloseUsername.value = inputClosePin.value = '';
-  labelWelcome.textContent = 'Log in to get started';
+  clearInterval(timer);
+  logoutTimer();
 });
 
 // Get the modal
@@ -345,7 +365,6 @@ tnC.onclick = function () {
   setTimeout(function () {
     body.className = 'MainContainer is-blurred';
     modal.className = 'Modal';
-    body.style.background = 'rgba(100, 100, 100, 0.5)';
   }, 100);
 };
 
@@ -364,7 +383,26 @@ window.onclick = function (event) {
   }
 };
 
-/* activeAccount = account1;
-renderUI(activeAccount);
-containerApp.style.opacity = 100;
- */
+const logoutTimer = function () {
+  let start = 5 * 60;
+  let min = Math.floor(start / 60);
+  let sec = start % 60;
+  const tickTick = function () {
+    if (sec === 0) {
+      min--;
+      sec = 59;
+    } else {
+      sec--;
+    }
+    if (min === 0 && sec === 0) {
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Log in to get started';
+      clearInterval(timer);
+    }
+    labelTimer.textContent = `${min.toString().padStart(2, '0')}:${sec
+      .toString()
+      .padStart(2, '0')}`;
+  };
+  tickTick();
+  timer = setInterval(tickTick, 1000);
+};
