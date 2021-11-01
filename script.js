@@ -54,7 +54,7 @@ const account3 = {
     new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
     new Date().toISOString(),
   ],
-  currency: 'Rupee',
+  currency: 'INR',
   locale: 'en-IN',
 };
 
@@ -70,7 +70,7 @@ const account4 = {
     new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3),
     new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
   ],
-  currency: 'Yen',
+  currency: 'JPY',
   locale: 'ja-JP',
 };
 
@@ -109,14 +109,27 @@ const currencies = new Map([
   ['Yen', 'Japanese Yen'],
 ]);
 
+let activeAccount;
+//fake account
+// activeAccount = account1;
+
 function dateformatter(today) {
+  /* 
   var dd = `${today.getDate()}`.padStart(2, '0');
   var mm = `${today.getMonth() + 1}`.padStart(2, '0');
   var yyyy = today.getFullYear();
   const hours = `${today.getHours()}`.padStart(2, '0');
   const minutes = `${today.getMinutes()}`.padStart(2, '0');
 
-  return `${dd}/${mm}/${yyyy}, ${hours}:${minutes}`;
+  return `${dd}/${mm}/${yyyy}, ${hours}:${minutes}`; */
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  };
+  return new Intl.DateTimeFormat(activeAccount.locale, options).format(today);
 }
 
 labelDate.textContent = dateformatter(new Date());
@@ -138,6 +151,13 @@ function formatMovDate(date) {
   return daysStr;
 }
 
+const intLAmount = function (amt, toFix) {
+  return new Intl.NumberFormat(activeAccount.locale, {
+    style: 'currency',
+    currency: activeAccount.currency,
+  }).format(Math.abs(amt).toFixed(toFix));
+};
+
 const displayMovements = function (accs, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -155,7 +175,9 @@ const displayMovements = function (accs, sort = false) {
              ${type}
           </div>
            <div class="movements__date">${date}</div>
-          <div class="movements__value">₹${Math.abs(element).toFixed(2)}</div>
+          <div class="movements__value">
+          ${intLAmount(element, 2)}
+          </div>
         </div>
     `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -176,7 +198,7 @@ createUsernames(accounts);
 const displayTotalBalance = function (account) {
   const bal = account.movements.reduce((acc, mov) => acc + mov, 0);
   account.balance = bal;
-  labelBalance.textContent = `₹${bal.toFixed(2)}`;
+  labelBalance.textContent = `${intLAmount(bal, 2)}`;
 };
 
 const displaySummary = function (account) {
@@ -185,7 +207,7 @@ const displaySummary = function (account) {
   const deposites = movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr, 0);
-  labelSumIn.textContent = `₹${deposites.toFixed(2)}`;
+  labelSumIn.textContent = `${intLAmount(deposites, 2)}`;
 
   const withdrawal = movements
     .filter(mov => mov < 0)
@@ -193,13 +215,13 @@ const displaySummary = function (account) {
       // console.log(arr,acc,curr);
       return acc + curr;
     }, 0);
-  labelSumOut.textContent = `₹${Math.abs(withdrawal).toFixed(2)}`;
+  labelSumOut.textContent = `${intLAmount(withdrawal, 2)}`;
 
   const interest = movements
     .filter(deposite => deposite > 0)
     .map(deposite => (deposite * interestOnDeposite) / 100)
     .reduce((acc, interest) => acc + interest, 0);
-  labelSumInterest.textContent = `₹${interest.toFixed(2)}`;
+  labelSumInterest.textContent = `${intLAmount(interest, 2)}`;
 };
 
 const renderUI = function (acc) {
@@ -212,8 +234,6 @@ const renderUI = function (acc) {
   //display summary
   displaySummary(acc);
 };
-
-let activeAccount;
 
 //login validation
 btnLogin.addEventListener('click', function (e) {
@@ -344,7 +364,7 @@ window.onclick = function (event) {
   }
 };
 
-//fake account
-activeAccount = account1;
+/* activeAccount = account1;
 renderUI(activeAccount);
 containerApp.style.opacity = 100;
+ */
