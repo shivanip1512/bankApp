@@ -87,6 +87,8 @@ const labelTimer = document.querySelector('.timer');
 
 const containerApp = document.querySelector('.app');
 const containerMovements = document.querySelector('.movements');
+const bankLogo = document.querySelector('.logo');
+const reference = document.getElementById('references');
 
 const btnLogin = document.querySelector('.login__btn');
 const btnTransfer = document.querySelector('.form__btn--transfer');
@@ -257,9 +259,26 @@ const renderUI = function (acc) {
   displaySummary(acc);
 };
 
+const adjustReferencesWidth = function () {
+  const eleRect = bankLogo.getBoundingClientRect();
+  const targetRect = reference.getBoundingClientRect();
+  console.log('ele :', eleRect, 'target', targetRect);
+  let left = eleRect.left - targetRect.left;
+  left += targetRect.left;
+  console.log('left:', left);
+  reference.style.marginLeft = `${left}px`;
+};
+adjustReferencesWidth();
+
+window.addEventListener('resize', function (event) {
+  console.log('width change');
+  adjustReferencesWidth();
+});
+
 const resetUILogoff = function () {
   containerApp.style.opacity = 0;
   labelWelcome.textContent = 'Log in to get started';
+  reference.style.display = 'unset';
 };
 
 //login validation
@@ -275,6 +294,7 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome back, ${
       activeAccount.owner.split(' ')[0]
     }`;
+    reference.style.display = 'none';
     signUpContainer.style.display = 'none';
     divSignIn.style.display = 'none';
     btnsignOut.style.display = 'unset';

@@ -399,3 +399,15 @@ h2 {
 #myModal li {
   font-size: small;
 }
+
+#references {
+  display: flex;
+  position: absolute;
+  bottom: 9px;
+}
+
+.socialMedia {
+  color: rgba(103, 153, 179, 0.9);
+  font-size: 25px !important;
+  padding-right: 6px;
+}
