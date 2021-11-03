@@ -22,6 +22,11 @@ body {
   height: 100vh;
   padding: 2rem;
   overflow: hidden;
+  /* background: url('../images/bankImg.png') right bottom no-repeat, #f3f3f3; */
+  background-image: url('../images/bankImg.png'), url('../images/circle.png');
+  background-position: right bottom, 0% 50%;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 500px 500px, 200px 600px;
 }
 
 nav {
@@ -347,7 +352,7 @@ h2 {
   -webkit-transition: 0.5s;
   overflow: auto;
   transition: all 0.3s linear;
-  fdisplay: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
@@ -407,7 +412,7 @@ h2 {
 }
 
 .socialMedia {
-  color: rgba(103, 153, 179, 0.9);
+  color: rgba(57, 179, 133, 0.8);
   font-size: 25px !important;
   padding-right: 6px;
 }
@@ -424,5 +429,6 @@ h2 {
   width: 54%;
   font-size: 36px !important;
   line-height: 76px !important;
-  padding: 18% 0% 0% 1%;
+  padding: 15% 0% 0% 1%;
+  transition: all 1s;
 }

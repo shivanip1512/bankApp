@@ -130,6 +130,35 @@ let activeAccount, timer;
 
 document.getElementById('hrefSub').click();
 
+function loadHomePage() {
+  containerApp.style.opacity = 0;
+  containerApp.style.display = 'none';
+  homePage.style.display = null;
+  reference.style.display = null;
+  divSignUp.style.display = 'none';
+  document.body.style.background =
+    "url('../images/bankImg.png') right bottom no-repeat, #f3f3f3";
+  containerApp.style.display = 'none';
+  divSignOptions.style.display = 'unset';
+  divSignIn.style.display = 'none';
+  btnSignOut.style.display = 'none';
+  resetUILogoff();
+}
+
+function loadLoginPage() {
+  homePage.style.display = 'none';
+  document.body.style.backgroundImage = 'none';
+  document.body.style.backgroundColor = '#f3f3f3';
+  reference.style.display = 'none';
+  signUpContainer.style.display = 'none';
+  divSignIn.style.display = 'none';
+  btnSignOut.style.display = 'block';
+  containerApp.style.opacity = 100;
+  containerApp.style.display = null;
+  inputLoginUsername.value = inputLoginPin.value = '';
+  inputLoginPin.blur();
+}
+
 btnSignIn.onclick = function () {
   btnLogin.style.display = 'unset';
   divSignIn.style.display = 'unset';
@@ -139,11 +168,13 @@ btnSignIn.onclick = function () {
 signUpContainer.style.display = 'none';
 btnSignUp.onclick = function () {
   divSignUp.style.opacity = 100;
+  divSignUp.style.display = null;
   signUpContainer.style.display = 'unset';
+  homePage.style.display = 'none';
 };
 
 btnSignUpCancel.onclick = function () {
-  divSignUp.style.opacity = 0;
+  loadHomePage();
 };
 
 // signupbtn.addEventListener('click', function () {
@@ -308,14 +339,7 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome back, ${
       activeAccount.owner.split(' ')[0]
     }`;
-    reference.style.display = 'none';
-    signUpContainer.style.display = 'none';
-    divSignIn.style.display = 'none';
-    btnSignOut.style.display = 'unset';
-    containerApp.style.opacity = 'unset';
-    inputLoginUsername.value = inputLoginPin.value = '';
-    inputLoginPin.blur();
-
+    loadLoginPage();
     if (timer) clearInterval(timer);
     logoutTimer();
     renderUI(activeAccount);
@@ -326,10 +350,7 @@ btnLogin.addEventListener('click', function (e) {
 btnSignOut.addEventListener('click', function (e) {
   e.preventDefault();
   activeAccount = '';
-  divSignOptions.style.display = 'unset';
-  divSignIn.style.display = 'none';
-  btnSignOut.style.display = 'none';
-  resetUILogoff();
+  loadHomePage();
 });
 
 //sort button functionality
@@ -413,7 +434,7 @@ btnClose.addEventListener('click', function (e) {
     );
     // console.log(index);
     accounts.splice(index, 1);
-    resetUILogoff();
+    loadHomePage();
   }
   inputCloseUsername.value = inputClosePin.value = '';
   clearInterval(timer);
