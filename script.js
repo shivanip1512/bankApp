@@ -117,6 +117,7 @@ const inputPassword = document.querySelector('.signup__input--password');
 const inputRePassword = document.querySelector('.signup__input--repassword');
 const signupbtn = document.querySelector('.signupbtn');
 const errMsgPwd = document.querySelector('.errorMsg.pwd');
+const homePage = document.querySelector('.homePage');
 
 const currencies = new Map([
   ['USD', 'United States dollar'],

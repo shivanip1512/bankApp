@@ -419,3 +419,10 @@ h2 {
 .signUpContainer {
   display: none;
 }
+
+.homePage {
+  width: 54%;
+  font-size: 36px !important;
+  line-height: 76px !important;
+  padding: 18% 0% 0% 1%;
+}
