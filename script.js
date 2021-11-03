@@ -128,6 +128,7 @@ btnSignIn.onclick = function () {
 
 btnSignUp.onclick = function () {
   divSignUp.style.opacity = 100;
+  signUpContainer.style.display = 'unset';
 };
 
 btnSignUpCancel.onclick = function () {
@@ -264,9 +265,7 @@ const resetUILogoff = function () {
 //login validation
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); // prevent default behaviour of login form
-  signUpContainer.style.display = 'none';
-  divSignIn.style.display = 'none';
-  document.body.style.overflow = 'unset';
+  document.body.style.overflow = 'hidden';
   activeAccount = accounts.find(
     acc => acc.userName === inputLoginUsername.value
   );
@@ -276,6 +275,8 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome back, ${
       activeAccount.owner.split(' ')[0]
     }`;
+    signUpContainer.style.display = 'none';
+    divSignIn.style.display = 'none';
     btnsignOut.style.display = 'unset';
     btnSignOut.style.display = 'unset';
     containerApp.style.opacity = 'unset';
