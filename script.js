@@ -136,8 +136,13 @@ function loadHomePage() {
   homePage.style.display = null;
   reference.style.display = null;
   divSignUp.style.display = 'none';
-  document.body.style.background =
-    "url('../images/bankImg.png') right bottom no-repeat, #f3f3f3";
+  // document.body.style.background =
+  //   "url('../images/bankImg.png') right bottom no-repeat, #f3f3f3";
+  document.body.style.backgroundImage =
+    "url('../images/bankImg.png'), url('../images/circle.png'";
+  document.body.style.backgroundPosition = 'right bottom, 0% 50%';
+  document.body.style.backgroundRepeat = 'no-repeat, no-repeat';
+  document.body.style.backgroundSize = '500px 500px, 200px 600px';
   containerApp.style.display = 'none';
   divSignOptions.style.display = 'unset';
   divSignIn.style.display = 'none';
@@ -170,6 +175,7 @@ btnSignUp.onclick = function () {
   divSignUp.style.opacity = 100;
   divSignUp.style.display = null;
   signUpContainer.style.display = 'unset';
+  document.body.style.backgroundImage = "url('../images/bankImg.png')";
   homePage.style.display = 'none';
 };
 
