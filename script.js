@@ -108,6 +108,8 @@ const divSignIn = document.querySelector('.login');
 const divSignOptions = document.querySelector('.sign');
 const btnSignUpCancel = document.querySelector('.cancelbtn');
 const signUpContainer = document.querySelector('.signUpContainer');
+const btnsignOut = document.querySelector('.fa-sign-out');
+const btnSignOut = document.querySelector('.logout');
 
 const currencies = new Map([
   ['USD', 'United States dollar'],
@@ -254,10 +256,16 @@ const renderUI = function (acc) {
   displaySummary(acc);
 };
 
+const resetUILogoff = function () {
+  containerApp.style.opacity = 0;
+  labelWelcome.textContent = 'Log in to get started';
+};
+
 //login validation
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); // prevent default behaviour of login form
   signUpContainer.style.display = 'none';
+  divSignIn.style.display = 'none';
   document.body.style.overflow = 'unset';
   activeAccount = accounts.find(
     acc => acc.userName === inputLoginUsername.value
@@ -268,6 +276,8 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome back, ${
       activeAccount.owner.split(' ')[0]
     }`;
+    btnsignOut.style.display = 'unset';
+    btnSignOut.style.display = 'unset';
     containerApp.style.opacity = 'unset';
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
@@ -276,6 +286,16 @@ btnLogin.addEventListener('click', function (e) {
     logoutTimer();
     renderUI(activeAccount);
   }
+});
+
+//logout
+btnSignOut.addEventListener('click', function (e) {
+  e.preventDefault();
+  activeAccount = '';
+  divSignOptions.style.display = 'unset';
+  divSignIn.style.display = 'none';
+  btnSignOut.style.display = 'none';
+  resetUILogoff();
 });
 
 //sort button functionality
@@ -359,8 +379,7 @@ btnClose.addEventListener('click', function (e) {
     );
     // console.log(index);
     accounts.splice(index, 1);
-    containerApp.style.opacity = 0;
-    labelWelcome.textContent = 'Log in to get started';
+    resetUILogoff();
   }
   inputCloseUsername.value = inputClosePin.value = '';
   clearInterval(timer);

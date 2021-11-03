@@ -31,9 +31,15 @@ nav {
   padding: 0 2rem;
 }
 
-.welcome {
+.welcome,
+.logout {
   font-size: 1.9rem;
   font-weight: 500;
+}
+
+.logout {
+  display: none;
+  cursor: pointer;
 }
 
 .logo {
