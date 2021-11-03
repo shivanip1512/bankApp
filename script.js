@@ -110,8 +110,13 @@ const divSignIn = document.querySelector('.login');
 const divSignOptions = document.querySelector('.sign');
 const btnSignUpCancel = document.querySelector('.cancelbtn');
 const signUpContainer = document.querySelector('.signUpContainer');
-const btnsignOut = document.querySelector('.fa-sign-out');
 const btnSignOut = document.querySelector('.logout');
+const inputFullName = document.querySelector('.signup__input--fullname');
+const inputUserName = document.querySelector('.signup__input--username');
+const inputPassword = document.querySelector('.signup__input--password');
+const inputRePassword = document.querySelector('.signup__input--repassword');
+const signupbtn = document.querySelector('.signupbtn');
+const errMsgPwd = document.querySelector('.errorMsg.pwd');
 
 const currencies = new Map([
   ['USD', 'United States dollar'],
@@ -122,12 +127,15 @@ const currencies = new Map([
 
 let activeAccount, timer;
 
+document.getElementById('hrefSub').click();
+
 btnSignIn.onclick = function () {
   btnLogin.style.display = 'unset';
   divSignIn.style.display = 'unset';
   divSignOptions.style.display = 'none';
 };
 
+signUpContainer.style.display = 'none';
 btnSignUp.onclick = function () {
   divSignUp.style.opacity = 100;
   signUpContainer.style.display = 'unset';
@@ -136,6 +144,12 @@ btnSignUp.onclick = function () {
 btnSignUpCancel.onclick = function () {
   divSignUp.style.opacity = 0;
 };
+
+// signupbtn.addEventListener('click', function () {
+//   if (inputPassword.value !== inputRePassword.value) {
+//     errMsgPwd.textContent = "Password doesn't match.";
+//   }
+// });
 
 function dateformatter(today) {
   /* 
@@ -262,10 +276,8 @@ const renderUI = function (acc) {
 const adjustReferencesWidth = function () {
   const eleRect = bankLogo.getBoundingClientRect();
   const targetRect = reference.getBoundingClientRect();
-  console.log('ele :', eleRect, 'target', targetRect);
   let left = eleRect.left - targetRect.left;
   left += targetRect.left;
-  console.log('left:', left);
   reference.style.marginLeft = `${left}px`;
 };
 adjustReferencesWidth();
@@ -279,6 +291,7 @@ const resetUILogoff = function () {
   containerApp.style.opacity = 0;
   labelWelcome.textContent = 'Log in to get started';
   reference.style.display = 'unset';
+  signUpContainer.style.display = 'none';
 };
 
 //login validation
@@ -297,7 +310,6 @@ btnLogin.addEventListener('click', function (e) {
     reference.style.display = 'none';
     signUpContainer.style.display = 'none';
     divSignIn.style.display = 'none';
-    btnsignOut.style.display = 'unset';
     btnSignOut.style.display = 'unset';
     containerApp.style.opacity = 'unset';
     inputLoginUsername.value = inputLoginPin.value = '';

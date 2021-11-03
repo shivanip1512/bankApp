@@ -73,7 +73,7 @@
           <input
             type="text"
             placeholder="Enter Full Name"
-            class="signup__input"
+            class="signup__input signup__input--fullname"
             required
           />
 
@@ -81,7 +81,7 @@
           <input
             type="text"
             placeholder="Enter User Name"
-            class="signup__input"
+            class="signup__input signup__input--username"
             required
           />
 
@@ -89,7 +89,7 @@
           <input
             type="password"
             placeholder="Enter Password"
-            class="signup__input"
+            class="signup__input signup__input--password"
             required
           />
 
@@ -97,9 +97,10 @@
           <input
             type="password"
             placeholder="Repeat Password"
-            class="signup__input"
+            class="signup__input signup__input--repassword"
             required
           />
+          <!-- <span class="errorMsg"></span> -->
 
           <label>
             <input
@@ -225,6 +226,8 @@
         </ul>
       </div>
     </div>
+
+    <a style="display: none" href="?#" id="hrefSub"></a>
 
     <div class="box is-hidden" id="loader">
       <div class="container">

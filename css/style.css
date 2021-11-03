@@ -411,3 +411,11 @@ h2 {
   font-size: 25px !important;
   padding-right: 6px;
 }
+
+.errorMsg {
+  color: red;
+}
+
+.signUpContainer {
+  display: none;
+}
