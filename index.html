@@ -86,8 +86,10 @@
             type="text"
             placeholder="Enter User Name"
             class="signup__input signup__input--username"
+            onchange="verifySignup()"
             required
           />
+          <p class="errorMsg error--username"></p>
 
           <label for="psw"><b>Password</b></label>
           <input
@@ -102,9 +104,11 @@
             type="password"
             placeholder="Repeat Password"
             class="signup__input signup__input--repassword"
+            onchange="verifySignup()"
             required
           />
-          <!-- <span class="errorMsg"></span> -->
+          <p class="errorMsg pwd"></p>
+          <br />
 
           <label>
             <input

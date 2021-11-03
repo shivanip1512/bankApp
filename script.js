@@ -115,9 +115,10 @@ const inputFullName = document.querySelector('.signup__input--fullname');
 const inputUserName = document.querySelector('.signup__input--username');
 const inputPassword = document.querySelector('.signup__input--password');
 const inputRePassword = document.querySelector('.signup__input--repassword');
-const signupbtn = document.querySelector('.signupbtn');
+const btnSubmitSignup = document.querySelector('.signupbtn');
 const errMsgPwd = document.querySelector('.errorMsg.pwd');
 const homePage = document.querySelector('.homePage');
+const errMsgUserName = document.querySelector('.errorMsg.error--username');
 
 const currencies = new Map([
   ['USD', 'United States dollar'],
@@ -183,11 +184,31 @@ btnSignUpCancel.onclick = function () {
   loadHomePage();
 };
 
-// signupbtn.addEventListener('click', function () {
-//   if (inputPassword.value !== inputRePassword.value) {
-//     errMsgPwd.textContent = "Password doesn't match.";
-//   }
-// });
+function verifySignup() {
+  console.log('inside verify');
+  if (inputPassword.value !== inputRePassword.value) {
+    errMsgPwd.innerHTML = "Password doesn't match.";
+    return false;
+  } else {
+    //to erase if error occured in the past
+    errMsgPwd.innerHTML = '';
+  }
+  const isExistAcc = accounts.find(acc => acc.userName === inputUserName.value);
+  console.log(isExistAcc);
+  if (isExistAcc) {
+    errMsgUserName.innerHTML = 'User name already exists.';
+    return false;
+  } else {
+    errMsgUserName.innerHTML = '';
+  }
+  return true;
+}
+
+btnSubmitSignup.addEventListener('click', function () {
+  alert(
+    `${inputFullName.value}, ${inputUserName.value}, ${inputPassword.value}`
+  );
+});
 
 function dateformatter(today) {
   /* 
