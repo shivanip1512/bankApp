@@ -21,6 +21,7 @@ body {
   background-color: #f3f3f3;
   height: 100vh;
   padding: 2rem;
+  overflow: hidden;
 }
 
 nav {
@@ -41,11 +42,12 @@ nav {
 
 .login {
   display: flex;
+  display: none;
 }
 
 .login__input {
   border: none;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 2rem !important;
   font-size: 1.6rem;
   font-family: inherit;
   text-align: center;
@@ -57,12 +59,14 @@ nav {
   transition: all 0.3s;
 }
 
-.login__input:focus {
+.login__input:focus,
+.signup__input:focus {
   outline: none;
   border: 1px solid #ccc;
 }
 
-.login__input::placeholder {
+.login__input::placeholder,
+.signup__input::placeholder {
   color: #bbb;
 }
 
@@ -73,10 +77,13 @@ nav {
   color: inherit;
   cursor: pointer;
   transition: all 0.3s;
+  display: none;
 }
 
 .login__btn:hover,
 .login__btn:focus,
+.signup__btn:hover,
+.signup__btn:focus,
 .btn--sort:hover,
 .btn--sort:focus {
   outline: none;
@@ -334,7 +341,7 @@ h2 {
   -webkit-transition: 0.5s;
   overflow: auto;
   transition: all 0.3s linear;
-  display: flex;
+  fdisplay: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;

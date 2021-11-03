@@ -101,6 +101,13 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
+const btnSignIn = document.querySelector('.btn__signin');
+const btnSignUp = document.querySelector('.btn__signup');
+const divSignUp = document.querySelector('.createUser');
+const divSignIn = document.querySelector('.login');
+const divSignOptions = document.querySelector('.sign');
+const btnSignUpCancel = document.querySelector('.cancelbtn');
+const signUpContainer = document.querySelector('.signUpContainer');
 
 const currencies = new Map([
   ['USD', 'United States dollar'],
@@ -110,8 +117,20 @@ const currencies = new Map([
 ]);
 
 let activeAccount, timer;
-//fake account
-// activeAccount = account1;
+
+btnSignIn.onclick = function () {
+  btnLogin.style.display = 'unset';
+  divSignIn.style.display = 'unset';
+  divSignOptions.style.display = 'none';
+};
+
+btnSignUp.onclick = function () {
+  divSignUp.style.opacity = 100;
+};
+
+btnSignUpCancel.onclick = function () {
+  divSignUp.style.opacity = 0;
+};
 
 function dateformatter(today) {
   /* 
@@ -238,6 +257,8 @@ const renderUI = function (acc) {
 //login validation
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); // prevent default behaviour of login form
+  signUpContainer.style.display = 'none';
+  document.body.style.overflow = 'unset';
   activeAccount = accounts.find(
     acc => acc.userName === inputLoginUsername.value
   );

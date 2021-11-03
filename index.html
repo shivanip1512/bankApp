@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="icon" href="rupee.icon.png" />
+    <link rel="icon" href="images/rupee.icon.png" />
     <!-- <link rel="icon" href="diceIcon.ico.png" /> -->
 
     <link
@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/loader.css" />
+    <link rel="stylesheet" href="css/signup.css" />
     <title>Bankist</title>
   </head>
   <body>
@@ -21,21 +22,28 @@
     <nav>
       <p class="welcome">Log in to get started</p>
       <img
-        src="bankinBlack.png"
+        src="images/bankinBlack.png"
         alt="Logo"
         width="100px"
         height="150px"
         class="logo"
       />
+      <form class="sign">
+        <button placeholder="Sign in" class="signClass btn__signin">
+          Sign in
+        </button>
+        <button placeholder="Sign up" class="signClass btn__signup">
+          Sign up
+        </button>
+      </form>
       <form class="login">
         <input
           type="text"
           placeholder="user"
           class="login__input login__input--user"
         />
-        <!-- In practice, use type="password" -->
         <input
-          type="text"
+          type="password"
           placeholder="PIN"
           maxlength="4"
           class="login__input login__input--pin"
@@ -43,6 +51,68 @@
         <button class="login__btn">&rarr;</button>
       </form>
     </nav>
+
+    <main class="signUpContainer">
+      <div class="createUser">
+        <form class="createAccount">
+          <h1>Sign Up</h1>
+          <p>Please fill in this form to create an account.</p>
+          <hr />
+
+          <label><b>Full Name</b></label>
+          <input
+            type="text"
+            placeholder="Enter Full Name"
+            class="signup__input"
+            required
+          />
+
+          <label><b>User Name</b></label>
+          <input
+            type="text"
+            placeholder="Enter User Name"
+            class="signup__input"
+            required
+          />
+
+          <label for="psw"><b>Password</b></label>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            class="signup__input"
+            required
+          />
+
+          <label for="psw-repeat"><b>Repeat Password</b></label>
+          <input
+            type="password"
+            placeholder="Repeat Password"
+            class="signup__input"
+            required
+          />
+
+          <label>
+            <input
+              type="checkbox"
+              checked="checked"
+              name="remember"
+              style="margin-bottom: 15px"
+            />
+            Remember me
+          </label>
+
+          <p>
+            By creating an account you agree to our
+            <a href="#" style="color: dodgerblue">Terms & Privacy</a>.
+          </p>
+
+          <div class="clearfix">
+            <button type="button" class="cancelbtn">Cancel</button>
+            <button type="submit" class="signupbtn">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </main>
 
     <main class="app">
       <!-- BALANCE -->
@@ -146,7 +216,7 @@
       </div>
     </div>
 
-    <div class="box" id="loader">
+    <div class="box is-hidden" id="loader">
       <div class="container">
         <span class="circle"></span>
         <span class="circle"></span>

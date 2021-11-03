@@ -1,0 +1,106 @@
+.signup__input {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 15px 0;
+  display: inline-block;
+  border: none;
+  background: white;
+  border-radius: 5px;
+}
+
+.createAccount {
+  padding: 20px;
+}
+
+.signup__input:focus {
+  outline: none;
+  border: 1px solid #ccc;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for all buttons */
+.cancelbtn,
+.signupbtn {
+  background-color: #04aa6d;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity: 1;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  padding: 14px 20px;
+  background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn,
+.signupbtn {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: '';
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn,
+  .signupbtn {
+    width: 100%;
+  }
+}
+
+.createUser {
+  box-shadow: 0px 0px 6px #888888;
+  margin-top: 4%;
+  margin-left: calc(50% - 19%);
+  width: 35%;
+  border-radius: 10px;
+  position: relative;
+  max-width: 100 rem;
+  margin: 2 rem auto;
+  gap: 2 rem;
+  opacity: 0;
+  transition: all 1s;
+}
+
+.signClass {
+  border: none;
+  padding: 0.5rem 2rem !important;
+  font-size: 1.6rem;
+  font-family: inherit;
+  text-align: center;
+  width: 12rem;
+  border-radius: 10rem;
+  margin-right: 1rem;
+  color: inherit;
+  border: 1px solid #fff;
+  transition: all 0.3s;
+  /* display: none; */
+}
+
+.btn__signin,
+.btn__signup {
+  /* padding: 10px 25px; */
+  border-radius: 20px;
+  border: 1px solid #fff;
+  background: white;
+  /* margin-right: 1rem; */
+}
