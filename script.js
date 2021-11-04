@@ -119,6 +119,7 @@ const btnSubmitSignup = document.querySelector('.signupbtn');
 const errMsgPwd = document.querySelector('.errorMsg.pwd');
 const homePage = document.querySelector('.homePage');
 const errMsgUserName = document.querySelector('.errorMsg.error--username');
+const autoLoginCheckBox = document.getElementById('autoSign');
 
 const currencies = new Map([
   ['USD', 'United States dollar'],
@@ -159,6 +160,7 @@ function loadLoginPage() {
   signUpContainer.style.display = 'none';
   divSignIn.style.display = 'none';
   btnSignOut.style.display = 'block';
+  divSignOptions.style.display = 'none';
   containerApp.style.opacity = 100;
   containerApp.style.display = null;
   inputLoginUsername.value = inputLoginPin.value = '';
@@ -188,6 +190,7 @@ function verifySignup() {
   console.log('inside verify');
   if (inputPassword.value !== inputRePassword.value) {
     errMsgPwd.innerHTML = "Password doesn't match.";
+    inputRePassword.value = '';
     return false;
   } else {
     //to erase if error occured in the past
@@ -197,6 +200,7 @@ function verifySignup() {
   console.log('isExistAcc :', isExistAcc);
   if (isExistAcc) {
     errMsgUserName.innerHTML = 'User name already exists.';
+    inputUserName.value = '';
     return false;
   } else {
     errMsgUserName.innerHTML = '';
@@ -217,31 +221,46 @@ function verifySignup() {
 })(); */
 
 btnSubmitSignup.addEventListener('click', function () {
-  const inputName = inputFullName.value;
-  const inputUser = inputUserName.value;
-  const inputPin = Number(inputPassword.value);
+  if (verifySignup()) {
+    const inputName = inputFullName.value;
+    const inputUser = inputUserName.value;
+    const inputPin = Number(inputPassword.value);
 
-  const len = accounts.length;
-  const newAccount = {
-    owner: inputName,
-    userName: inputUser,
-    movements: [],
-    interestRate: +(1 * Math.random()).toFixed(1),
-    pin: inputPin,
-    movementsDates: [],
-    currency: 'INR',
-    locale: navigator.language,
-  };
-  inputFullName.value = '';
-  inputUserName.value = '';
-  inputPassword.value = '';
-  inputRePassword.value = '';
-  // createAccount();
-  console.log('newAccount: ', newAccount);
-  verifySignup();
-  accounts[len] = newAccount;
-  // eval('accounts.push(account' + len + ')');
+    const len = accounts.length;
+
+    //creating account object
+    const newAccount = {
+      owner: inputName,
+      userName: inputUser,
+      movements: [],
+      interestRate: +(1 * Math.random()).toFixed(1),
+      pin: inputPin,
+      movementsDates: [],
+      currency: 'INR',
+      locale: navigator.language,
+    };
+    //resetting field values
+    inputFullName.value = '';
+    inputUserName.value = '';
+    inputPassword.value = '';
+    inputRePassword.value = '';
+
+    //adding account object to array
+    accounts[len] = newAccount;
+
+    //check for signed in
+    console.log('checked', autoLoginCheckBox.checked);
+    if (autoLoginCheckBox.checked) {
+      activeAccount = newAccount;
+      loadLoginPage();
+      loginAccount();
+    }
+  }
 });
+
+function isChecked() {
+  console.log('checked', autoLoginCheckBox.checked);
+}
 
 function dateformatter(today) {
   /* 
@@ -386,23 +405,29 @@ const resetUILogoff = function () {
   signUpContainer.style.display = 'none';
 };
 
+//login bypass fucntion
+function loginAccount() {
+  //display welcome message
+  labelWelcome.textContent = `Welcome back, ${
+    activeAccount.owner.split(' ')[0]
+  }`;
+  loadLoginPage();
+  if (timer) clearInterval(timer);
+  logoutTimer();
+  renderUI(activeAccount);
+}
+
 //login validation
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); // prevent default behaviour of login form
   document.body.style.overflow = 'hidden';
+
   activeAccount = accounts.find(
     acc => acc.userName === inputLoginUsername.value
   );
 
   if (activeAccount?.pin === Number(inputLoginPin.value)) {
-    //display welcome message
-    labelWelcome.textContent = `Welcome back, ${
-      activeAccount.owner.split(' ')[0]
-    }`;
-    loadLoginPage();
-    if (timer) clearInterval(timer);
-    logoutTimer();
-    renderUI(activeAccount);
+    loginAccount();
   }
 });
 
