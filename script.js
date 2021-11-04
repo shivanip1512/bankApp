@@ -194,7 +194,7 @@ function verifySignup() {
     errMsgPwd.innerHTML = '';
   }
   const isExistAcc = accounts.find(acc => acc.userName === inputUserName.value);
-  console.log(isExistAcc);
+  console.log('isExistAcc :', isExistAcc);
   if (isExistAcc) {
     errMsgUserName.innerHTML = 'User name already exists.';
     return false;
@@ -204,10 +204,43 @@ function verifySignup() {
   return true;
 }
 
+/* let currencyCode;
+
+(async () => {
+  try {
+    var text = await fetch('http://www.geoplugin.net/json.gp');
+    const data = await response.json();
+    currencyCode = data.geoplugin_currencyCode;
+  } catch (e) {
+    currencyCode = '₹';
+  }
+})(); */
+
 btnSubmitSignup.addEventListener('click', function () {
-  alert(
-    `${inputFullName.value}, ${inputUserName.value}, ${inputPassword.value}`
-  );
+  const inputName = inputFullName.value;
+  const inputUser = inputUserName.value;
+  const inputPin = Number(inputPassword.value);
+
+  const len = accounts.length;
+  const newAccount = {
+    owner: inputName,
+    userName: inputUser,
+    movements: [],
+    interestRate: +(1 * Math.random()).toFixed(1),
+    pin: inputPin,
+    movementsDates: [],
+    currency: 'INR',
+    locale: navigator.language,
+  };
+  inputFullName.value = '';
+  inputUserName.value = '';
+  inputPassword.value = '';
+  inputRePassword.value = '';
+  // createAccount();
+  console.log('newAccount: ', newAccount);
+  verifySignup();
+  accounts[len] = newAccount;
+  // eval('accounts.push(account' + len + ')');
 });
 
 function dateformatter(today) {
@@ -498,12 +531,12 @@ close.onclick = function () {
 };
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.className = 'Modal is-hidden';
-    body.className = '';
-  }
-};
+// window.onclick = function (event) {
+//   if (event.target == modal) {
+//     modal.className = 'Modal is-hidden';
+//     body.className = '';
+//   }
+// };
 
 const logoutTimer = function () {
   let start = 5 * 60;
