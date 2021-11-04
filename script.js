@@ -111,6 +111,7 @@ const divSignOptions = document.querySelector('.sign');
 const btnSignUpCancel = document.querySelector('.cancelbtn');
 const signUpContainer = document.querySelector('.signUpContainer');
 const btnSignOut = document.querySelector('.logout');
+const signup__input = document.querySelector('.signup__input');
 const inputFullName = document.querySelector('.signup__input--fullname');
 const inputUserName = document.querySelector('.signup__input--username');
 const inputPassword = document.querySelector('.signup__input--password');
@@ -120,6 +121,7 @@ const errMsgPwd = document.querySelector('.errorMsg.pwd');
 const homePage = document.querySelector('.homePage');
 const errMsgUserName = document.querySelector('.errorMsg.error--username');
 const autoLoginCheckBox = document.getElementById('autoSign');
+const congSec = document.getElementById('congSection');
 
 const currencies = new Map([
   ['USD', 'United States dollar'],
@@ -149,6 +151,7 @@ function loadHomePage() {
   divSignOptions.style.display = 'unset';
   divSignIn.style.display = 'none';
   btnSignOut.style.display = 'none';
+  congSec.style.display = 'none';
   resetUILogoff();
 }
 
@@ -187,7 +190,16 @@ btnSignUpCancel.onclick = function () {
 };
 
 function verifySignup() {
-  console.log('inside verify');
+  if (
+    !(
+      inputPassword.value &&
+      inputRePassword.value &&
+      inputUserName.value &&
+      inputFullName.value
+    )
+  ) {
+    return false;
+  }
   if (inputPassword.value !== inputRePassword.value) {
     errMsgPwd.innerHTML = "Password doesn't match.";
     inputRePassword.value = '';
@@ -197,7 +209,6 @@ function verifySignup() {
     errMsgPwd.innerHTML = '';
   }
   const isExistAcc = accounts.find(acc => acc.userName === inputUserName.value);
-  console.log('isExistAcc :', isExistAcc);
   if (isExistAcc) {
     errMsgUserName.innerHTML = 'User name already exists.';
     inputUserName.value = '';
@@ -239,22 +250,31 @@ btnSubmitSignup.addEventListener('click', function () {
       currency: 'INR',
       locale: navigator.language,
     };
-    //resetting field values
-    inputFullName.value = '';
-    inputUserName.value = '';
-    inputPassword.value = '';
-    inputRePassword.value = '';
 
     //adding account object to array
     accounts[len] = newAccount;
 
     //check for signed in
     console.log('checked', autoLoginCheckBox.checked);
-    if (autoLoginCheckBox.checked) {
+    if (newAccount && autoLoginCheckBox.checked) {
       activeAccount = newAccount;
       loadLoginPage();
       loginAccount();
+    } else {
+      //congrats msg
+      congSec.style.marginRight = '5%';
+      divSignUp.style.display = 'none';
+      congSec.style.display = null;
+      setTimeout(() => {
+        loadHomePage();
+      }, 3000);
     }
+
+    //resetting field values
+    inputFullName.value = null;
+    inputUserName.value = '';
+    inputPassword.value = '';
+    inputRePassword.value = '';
   }
 });
 
@@ -384,18 +404,19 @@ const renderUI = function (acc) {
   displaySummary(acc);
 };
 
-const adjustReferencesWidth = function () {
-  const eleRect = bankLogo.getBoundingClientRect();
-  const targetRect = reference.getBoundingClientRect();
+const adjustReferencesWidth = function (bnk, ref) {
+  const eleRect = bnk.getBoundingClientRect();
+  const targetRect = ref.getBoundingClientRect();
+  console.log('eleRect : ', eleRect, 'targetRect : ', targetRect);
   let left = eleRect.left - targetRect.left;
   left += targetRect.left;
-  reference.style.marginLeft = `${left}px`;
+  ref.style.marginLeft = `${left}px`;
 };
-adjustReferencesWidth();
+adjustReferencesWidth(bankLogo, reference);
 
 window.addEventListener('resize', function (event) {
   console.log('width change');
-  adjustReferencesWidth();
+  adjustReferencesWidth(bankLogo, reference);
 });
 
 const resetUILogoff = function () {
