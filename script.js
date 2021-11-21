@@ -144,9 +144,9 @@ function loadHomePage() {
   reference.style.display = null;
   divSignUp.style.display = 'none';
   // document.body.style.background =
-  //   "url('../images/bankImg.png') right bottom no-repeat, #f3f3f3";
+  //   "ur  l('../images/bankImg.png') right bottom no-repeat, #f3f3f3";
   document.body.style.backgroundImage =
-    "url('../images/bankImg.png'), url('../images/circle.png'";
+    "url('./images/bankImg.png'), url('./images/circle.png'";
   document.body.style.backgroundPosition = 'right bottom, 0% 50%';
   document.body.style.backgroundRepeat = 'no-repeat, no-repeat';
   document.body.style.backgroundSize = '500px 500px, 200px 600px';
@@ -155,7 +155,6 @@ function loadHomePage() {
   divSignIn.style.display = 'none';
   btnSignOut.style.display = 'none';
   congSec.style.display = 'none';
-  location.reload();
   resetUILogoff();
 }
 
