@@ -258,7 +258,7 @@ btnSubmitSignup.addEventListener('click', function () {
     accounts[len] = newAccount;
 
     //check for signed in
-    console.log('checked', autoLoginCheckBox.checked);
+    // console.log('checked', autoLoginCheckBox.checked);
     if (newAccount && autoLoginCheckBox.checked) {
       activeAccount = newAccount;
       loadLoginPage();
@@ -410,7 +410,7 @@ const renderUI = function (acc) {
 const adjustReferencesWidth = function (bnk, ref) {
   const eleRect = bnk.getBoundingClientRect();
   const targetRect = ref.getBoundingClientRect();
-  console.log('eleRect : ', eleRect, 'targetRect : ', targetRect);
+  // console.log('eleRect : ', eleRect, 'targetRect : ', targetRect);
   let left = eleRect.left - targetRect.left;
   left += targetRect.left;
   ref.style.marginLeft = `${left}px`;
@@ -418,7 +418,7 @@ const adjustReferencesWidth = function (bnk, ref) {
 adjustReferencesWidth(bankLogo, reference);
 
 window.addEventListener('resize', function (event) {
-  console.log('width change');
+  // console.log('width change');
   adjustReferencesWidth(bankLogo, reference);
 });
 
