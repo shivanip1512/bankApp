@@ -122,6 +122,9 @@ const homePage = document.querySelector('.homePage');
 const errMsgUserName = document.querySelector('.errorMsg.error--username');
 const autoLoginCheckBox = document.getElementById('autoSign');
 const congSec = document.getElementById('congSection');
+const depositeRadioBtn = document.getElementById('depositeRadio');
+const withdrawRadioBtn = document.getElementById('withdrawRadio');
+const loanRadioBtn = document.getElementById('loanRadio');
 
 const currencies = new Map([
   ['USD', 'United States dollar'],
@@ -500,6 +503,31 @@ btnTransfer.addEventListener('click', function (e) {
 // grant loan condition--> if their is atleast1 deposite with 10%of loan amt
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
+
+  const amount = inputLoanAmount.value;
+  if (depositeRadioBtn.checked) {
+    if (amount > 0) {
+      pushAmtinAccount(amount);
+    }
+  } else if (withdrawRadioBtn.checked) {
+    if (amount > 0 && activeAccount.balance >= amount)
+      pushAmtinAccount(-amount);
+  } else if (loanRadioBtn.checked) {
+    takeLoanFmBank();
+  }
+
+  clearInterval(timer);
+  logoutTimer();
+});
+
+function pushAmtinAccount(Amount) {
+  activeAccount.movements.push(+Amount);
+  activeAccount.movementsDates.push(new Date().toISOString());
+  renderUI(activeAccount);
+  inputLoanAmount.value = '';
+}
+
+function takeLoanFmBank() {
   const loanAmt = Math.floor(inputLoanAmount.value);
   const canGrantLoan = activeAccount.movements.some(
     move => move >= loanAmt * 0.1
@@ -507,14 +535,7 @@ btnLoan.addEventListener('click', function (e) {
   if (loanAmt > 0 && canGrantLoan) {
     const modal = document.getElementById('loader');
     setTimeout(() => {
-      //take loan from bank
-      activeAccount.movements.push(loanAmt);
-
-      //add loan date
-      activeAccount.movementsDates.push(new Date().toISOString());
-
-      renderUI(activeAccount);
-
+      pushAmtinAccount(loanAmt);
       modal.className = 'Modal is-hidden is-visuallyHidden';
       body.className = '';
       body.className = 'MainContainer';
@@ -522,11 +543,8 @@ btnLoan.addEventListener('click', function (e) {
 
     body.className = 'MainContainer is-blurred';
     modal.className = 'Modal';
-    inputLoanAmount.value = '';
   }
-  clearInterval(timer);
-  logoutTimer();
-});
+}
 
 //close account
 btnClose.addEventListener('click', function (e) {
@@ -575,6 +593,14 @@ close.onclick = function () {
   body.className = '';
   body.className = 'MainContainer';
 };
+
+function hideTnC() {
+  tnC.style.display = 'none';
+}
+
+depositeRadioBtn.onclick = () => hideTnC();
+withdrawRadioBtn.onclick = () => hideTnC();
+loanRadioBtn.onclick = () => (tnC.style.display = 'unset');
 
 // When the user clicks anywhere outside of the modal, close it
 // window.onclick = function (event) {

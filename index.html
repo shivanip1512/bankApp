@@ -239,12 +239,24 @@
 
       <!-- OPERATION: LOAN -->
       <div class="operation operation--loan">
-        <h2>Request loan</h2>
+        <form>
+          <label class="radio-inline lblRadio">
+            <input type="radio" name="optradio" id="depositeRadio" checked />
+            Deposit
+          </label>
+          <label class="radio-inline lblRadio">
+            <input type="radio" name="optradio" id="withdrawRadio" /> Withdraw
+          </label>
+          <label class="radio-inline lblRadio">
+            <input type="radio" name="optradio" id="loanRadio" /> Request Loan
+          </label>
+        </form>
+
         <form class="form form--loan">
           <input type="number" class="form__input form__input--loan-amount" />
           <button class="form__btn form__btn--loan">&rarr;</button>
           <label class="form__label form__label--loan">Amount</label>
-          <div id="tnC">
+          <div id="tnC" style="display: none">
             <p>*Terms &amp; Conditions</p>
           </div>
         </form>
