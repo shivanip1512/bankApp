@@ -184,7 +184,7 @@ btnSignUp.onclick = function () {
   divSignUp.style.opacity = 100;
   divSignUp.style.display = null;
   signUpContainer.style.display = 'unset';
-  document.body.style.backgroundImage = "url('../images/bankImg.png')";
+  document.body.style.backgroundImage = "url('./images/bankImg.png')";
   homePage.style.display = 'none';
 };
 
