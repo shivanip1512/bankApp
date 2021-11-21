@@ -92,18 +92,20 @@
           />
           <p class="errorMsg error--username"></p>
 
-          <label for="psw"><b>Password</b></label>
+          <label for="psw"><b>Pin</b></label>
           <input
             type="password"
-            placeholder="Enter Password"
+            placeholder="Enter 4-digit Pin"
+            maxlength="4"
             class="signup__input signup__input--password"
             required
           />
 
-          <label for="psw-repeat"><b>Repeat Password</b></label>
+          <label for="psw-repeat"><b>Repeat Pin</b></label>
           <input
             type="password"
-            placeholder="Repeat Password"
+            maxlength="4"
+            placeholder="Repeat 4-digit Pin"
             class="signup__input signup__input--repassword"
             onchange="verifySignup()"
             required

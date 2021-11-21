@@ -189,8 +189,18 @@ btnSignUp.onclick = function () {
 };
 
 btnSignUpCancel.onclick = function () {
+  resetDefaultFieldValues();
   loadHomePage();
 };
+
+function resetDefaultFieldValues() {
+  inputFullName.value = '';
+  inputUserName.value = '';
+  inputPassword.value = '';
+  inputRePassword.value = '';
+  errMsgUserName.style.display = 'none';
+  errMsgPwd.innerHTML = '';
+}
 
 function verifySignup() {
   if (
@@ -204,6 +214,7 @@ function verifySignup() {
     return false;
   }
   if (inputPassword.value !== inputRePassword.value) {
+    errMsgPwd.style.display = 'block';
     errMsgPwd.innerHTML = "Password doesn't match.";
     inputRePassword.value = '';
     return false;
@@ -213,6 +224,7 @@ function verifySignup() {
   }
   const isExistAcc = accounts.find(acc => acc.userName === inputUserName.value);
   if (isExistAcc) {
+    errMsgUserName.style.display = 'block';
     errMsgUserName.innerHTML = 'User name already exists.';
     inputUserName.value = '';
     return false;
