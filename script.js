@@ -155,6 +155,7 @@ function loadHomePage() {
   divSignIn.style.display = 'none';
   btnSignOut.style.display = 'none';
   congSec.style.display = 'none';
+  location.reload();
   resetUILogoff();
 }
 
